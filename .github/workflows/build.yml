@@ -1,0 +1,45 @@
+name: Wails build
+
+on:
+  push:
+    tags:
+      - "*" # Match any new tag
+
+permissions:
+  contents: write
+
+env:
+  NODE_OPTIONS: "--max-old-space-size=4096"
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        build:
+          - name: "word-reverser"
+            platform: "linux/amd64"
+            os: "ubuntu-latest"
+          - name: "word-reverser"
+            platform: "windows/amd64"
+            os: "windows-latest"
+          - name: "word-reverser"
+            platform: "darwin/universal"
+            os: "macos-latest"
+
+    runs-on: ${{ matrix.build.os }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          submodules: recursive
+
+      - name: Build Wails App
+        uses: dAppServer/wails-build-action@main
+        id: build
+        with:
+          build-name: ${{ matrix.build.name }}
+          build-platform: ${{ matrix.build.platform }}
+          package: true
+          go-version: "1.23"

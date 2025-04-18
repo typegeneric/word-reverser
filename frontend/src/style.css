@@ -1,0 +1,17 @@
+@import "tailwindcss";
+
+body {
+  @apply bg-background text-foreground font-sans;
+}
+
+@theme {
+  --color-foreground: #e8e8f2;
+  --color-background: #14151a;
+  --color-primary: #8f8df0;
+
+  --font-geist: "Geist Sans", sans-serif;
+}
+
+@theme inline {
+  --font-sans: var(--font-geist);
+}
